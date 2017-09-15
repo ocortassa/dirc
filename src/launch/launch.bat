@@ -1,0 +1,1 @@
+java -jar dirc.jar -i E:/Restore/ -o E:/Restore/out -m C:/Users/IG01850/Desktop/mapping.properties -simulate true
