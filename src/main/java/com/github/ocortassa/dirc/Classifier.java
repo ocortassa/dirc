@@ -17,11 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * File classifier by extension
- *
- * Ref:
- * http://stackoverflow.com/questions/2022032/building-a-runnable-jar-with-maven-2
- * http://stackoverflow.com/questions/574594/how-can-i-create-an-executable-jar-with-dependencies-using-maven
+ * Directory Classifier by Extension
  *
  * @author [OC]
  */
@@ -31,16 +27,15 @@ public class Classifier {
     //TODO: [OC]
 //    statistiche!
 
-
     // Parametri
     private String sourcePath = "";
 	private String mappingFile = "";
 	private String destPath = "";
     private int steps= 0;
-    private boolean simulationMode = false;
+    private boolean dryRun = false;
 
-	private Map<String, String> mapping = new HashMap<String, String>();
-	private List<File> sources = new ArrayList<File>();
+	private Map<String, String> mapping = new HashMap<>();
+	private List<File> sources = new ArrayList<>();
 
     private long[] counters = new long[4];
 
@@ -85,12 +80,12 @@ public class Classifier {
         this.steps = steps;
     }
 
-    public void setSimulationMode(boolean simulationMode) {
-        this.simulationMode = simulationMode;
+    public void setDryRun(boolean dryRun) {
+        this.dryRun = dryRun;
     }
 
-    public boolean useSimulationMode() {
-        return simulationMode;
+    public boolean useDryRun() {
+        return dryRun;
     }
 
 	public void classify() {
@@ -125,10 +120,10 @@ public class Classifier {
     private void printStatistics() {
         StringBuilder buffer = new StringBuilder();
         buffer.append("\n----------------------------------------------------------\n")
-            .append("TOTALE: \t\t\t\t" + getCounter(TOTAL_COUNTER) + " files\n")
-            .append("PROCESSATI: \t\t\t" + getCounter(PROCESSED_COUNTER) + " files\n")
-            .append("SCARTATI: \t\t\t\t" + getCounter(REJECTED_COUNTER) + " files\n")
-            .append("NON MAPPATI: \t\t\t" + getCounter(UNMAPPED_COUNTER) + " files\n")
+            .append("TOTALE: \t\t\t\t").append(getCounter(TOTAL_COUNTER)).append(" files\n")
+            .append("PROCESSATI: \t\t\t").append(getCounter(PROCESSED_COUNTER)).append(" files\n")
+            .append("SCARTATI: \t\t\t\t").append(getCounter(REJECTED_COUNTER)).append(" files\n")
+            .append("NON MAPPATI: \t\t\t").append(getCounter(UNMAPPED_COUNTER)).append(" files\n")
             .append("----------------------------------------------------------");
         LOGGER.info(buffer.toString());
     }
@@ -140,7 +135,7 @@ public class Classifier {
 			// La chiave diventa il target mentre i valori diventano le chiavi
 			String key = itKeys.next();
 			String extList = config.getString(key);
-			String[] extensions = extList.split("\\:");
+			String[] extensions = extList.split(":");
 			for (String extension : extensions) {
 				mapping.put(extension.trim().toLowerCase(), key.trim().toLowerCase());
 			}
@@ -157,7 +152,7 @@ public class Classifier {
 		        		!(lowerName.endsWith("done"));
 		    }
 		});
-		sources = Arrays.asList(sourcesArray);
+		sources = sourcesArray != null ? Arrays.asList(sourcesArray) : new ArrayList<File>();
 	}
 	
 	private void processSources() throws IOException {
@@ -202,7 +197,7 @@ public class Classifier {
                     File destinationPathRef = new File(destinationPath);
                     File destinationFileRef = new File(destinationFile);
 
-                    if ( !useSimulationMode() ) {
+                    if ( !useDryRun() ) {
                         // Se non esiste già, creo la directory di destinazione
                         if ( !destinationPathRef.exists() ) {
                             FileUtils.forceMkdir(destinationPathRef);
@@ -210,7 +205,7 @@ public class Classifier {
                         }
                     }
 
-                    if ( !useSimulationMode() ) {
+                    if ( !useDryRun() ) {
                         moveFile(file, destinationFileRef);
                         LOGGER.info("spostato!");
                     }

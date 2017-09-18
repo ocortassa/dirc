@@ -1,4 +1,4 @@
-package com.github.ocortassa.dirc;
+package com.github.ocortassa.dirc.cli;
 
 import com.beust.jcommander.IStringConverter;
 

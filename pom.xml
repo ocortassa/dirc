@@ -62,7 +62,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.github.ocortassa.classifier.Launcher</mainClass>
+                            <mainClass>com.github.ocortassa.classifier.cli.Launcher</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

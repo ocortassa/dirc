@@ -1,4 +1,4 @@
-package com.github.ocortassa.dirc;
+package com.github.ocortassa.dirc.cli;
 
 import com.beust.jcommander.Parameter;
 
@@ -24,6 +24,6 @@ public class ClassifierParams {
     @Parameter(names = {"-steps"}, description = "Numero di directory da esplorare")
     public int steps = 0;    // Se 0 allora non ci sono limiti
 
-    @Parameter(names = {"-simulate"}, description = "Flag per simulazione", converter = ClassifierParamsConverter.class, arity = 1)
-    public boolean simulate = true;
+    @Parameter(names = {"-dryrun"}, description = "Flag per simulazione", converter = ClassifierParamsConverter.class, arity = 1)
+    public boolean dryrun = true;
 }

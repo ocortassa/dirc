@@ -1,6 +1,7 @@
-package com.github.ocortassa.dirc;
+package com.github.ocortassa.dirc.cli;
 
 import com.beust.jcommander.JCommander;
+import com.github.ocortassa.dirc.Classifier;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Level;
@@ -11,7 +12,7 @@ import org.apache.log4j.RollingFileAppender;
 import java.io.IOException;
 
 public class Launcher {
-    private final Logger LOGGER = Logger.getLogger(Launcher.class);
+    private final static Logger LOGGER = Logger.getLogger(Launcher.class);
 
     private ClassifierParams params = new ClassifierParams();
 
@@ -20,7 +21,7 @@ public class Launcher {
         try {
             launcher.launch();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         }
     }
 
@@ -37,17 +38,17 @@ public class Launcher {
         // Logging parametri di avvio
         StringBuilder buffer = new StringBuilder();
         buffer.append("\n----------------------------------------------")
-            .append("\nsource (-s): \t\t\t" + params.source)
-            .append("\ndestination (-d): \t\t" + params.destination)
-            .append("\nmapping (-m): \t\t\t" + params.mapping)
-            .append("\nlog (-l): \t\t\t\t" + params.logpath)
-            .append("\nsteps (-steps): \t\t" + params.steps)
-            .append("\nsimulate (-simulate): \t" + params.simulate)
+            .append("\nsource (-s): \t\t\t").append(params.source)
+            .append("\ndestination (-d): \t\t").append(params.destination)
+            .append("\nmapping (-m): \t\t\t").append(params.mapping)
+            .append("\nlog (-l): \t\t\t\t").append(params.logpath)
+            .append("\nsteps (-steps): \t\t").append(params.steps)
+            .append("\ndryrun (-dryrun): \t").append(params.dryrun)
             .append("\n----------------------------------------------");
         LOGGER.info(buffer.toString());
 
         Classifier c = new Classifier();
-//        c.setSimulationMode(true);
+//        c.setDryRun(true);
 //        c.setSourcePath("/media/omar/88D0C54DD0C54264/Restore");
 //        c.setDestPath("/media/omar/88D0C54DD0C54264/out");
 
@@ -73,7 +74,7 @@ public class Launcher {
         c.setMappingFile(params.mapping);
 
         c.setSteps(params.steps);
-        c.setSimulationMode(params.simulate);
+        c.setDryRun(params.dryrun);
 
         c.classify();
     }
@@ -85,7 +86,7 @@ public class Launcher {
                 .append("-m [File di mapping per guidare la classificazione]")
                 .append("-l [Directory in cui inserire i log]")
                 .append("-steps [Step di elaborazione, se 0 nessun limite]")
-                .append("-simulate [indica se la procedura effettua una simulazione o no]");
+                .append("-dryrun [indica se la procedura effettua una simulazione o no]");
         LOGGER.info(buffer.toString());
     }
 
