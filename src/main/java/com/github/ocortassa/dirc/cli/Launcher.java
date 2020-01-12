@@ -3,16 +3,13 @@ package com.github.ocortassa.dirc.cli;
 import com.beust.jcommander.JCommander;
 import com.github.ocortassa.dirc.Classifier;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.FileAppender;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
-import org.apache.log4j.RollingFileAppender;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
 public class Launcher {
-    private final static Logger LOGGER = Logger.getLogger(Launcher.class);
+    private final static Logger LOGGER = LogManager.getLogger(Launcher.class);
 
     private ClassifierParams params = new ClassifierParams();
 
@@ -30,11 +27,6 @@ public class Launcher {
     }
 
     private void launch() throws IOException {
-        //System.setProperty("logfile.path", params.logpath);
-        String appenderPath = params.logpath + "classifier.log";
-        settingFileLogger(appenderPath);
-        LOGGER.info("Settato log to [" + appenderPath + "]");
-
         // Logging parametri di avvio
         StringBuilder buffer = new StringBuilder();
         buffer.append("\n----------------------------------------------")
@@ -90,6 +82,7 @@ public class Launcher {
         LOGGER.info(buffer.toString());
     }
 
+    /*
     private void settingFileLogger(String logFile) throws IOException {
         FileAppender fileAppender = new RollingFileAppender();
         fileAppender.setName("fileAppender");
@@ -121,5 +114,5 @@ public class Launcher {
 //        //add appender to any Logger (here is root)
 //        Logger.getRootLogger().addAppender(fa)
     }
-
+    */
 }
